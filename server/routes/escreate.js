@@ -179,8 +179,10 @@ router.post('/saveES', async (req, res) => {
 
 			// リクエストのESをDBに保存
 			const saveES = {
-				newES: req.body.newES,
-				createDate: new Date(),// 送信の日付
+				ESCompany: req.body.ESCompany,
+				ESMode: req.body.ESMode,
+				EStext: req.body.newES,
+				createDate: new Date(),// 保存の日付
 			};
 			await insertDB(username, 'esList', saveES);// 引数 dbName:DB名 collectionName:コレクション名 newES:保存したい内容(JSON)
 
@@ -195,6 +197,29 @@ router.post('/saveES', async (req, res) => {
 		}
 	} catch (error) {
 		res.send('保存ができませんでした,再度同じ内容を送信してください');
+	}
+});
+
+// 過去のES履歴のリクエストが来たら
+// req	なし
+// res　esList:ESのリスト(JSONの配列)
+router.get('/EShistory', async (req, res) => {
+	const token = req.cookies.authToken;// ヘッダーのトークンを取得
+	if (!token) {
+		return res.redirect('/');
+	}
+
+	try {
+		const username = await checkToken(token);// ヘッダーのトークンを渡して、認証されたユーザーネームを受け取る
+		if (username === null) {
+			res.send('');
+		} else {
+			// DBからESのリストを取得
+			const esList = await getAllDocumentDB(username, 'esList');// 引数 DB名, コレクション名
+			res.json(esList);
+		}
+	} catch (error) {
+		res.send('');
 	}
 });
 module.exports = router;

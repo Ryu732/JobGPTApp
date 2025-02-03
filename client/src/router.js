@@ -32,6 +32,7 @@ router.beforeEach(async (to, from, next) => {
 	const authStore = useAuthStore()
 
 	if (to.meta.requiresAuth && !authStore.isAuth) { // ログインが必要なページにアクセスしようとしたが、ログインしていない場合
+		alert('ログインが必要です');
 		next({ name: 'home' })
 	} else {
 		next()

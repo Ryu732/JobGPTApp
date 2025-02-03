@@ -40,7 +40,7 @@
 		<v-list>
 			<v-list-item title="Homeに戻る" @click="router.push('/'); navi = false"></v-list-item>
 			<v-list-item title="会社検索" @click="router.push('/com_question'); navi = false"></v-list-item>
-			<v-list-item title="ES作成" @click="router.push('/es'); navi = false"></v-list-item>
+			<v-list-item title="ES作成(ログイン時のみ)" @click="router.push('/es'); navi = false"></v-list-item>
 		</v-list>
 	</v-navigation-drawer>
 

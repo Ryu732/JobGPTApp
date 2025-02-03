@@ -25,7 +25,7 @@
 						<v-btn @click="sendSettings" :disabled="isModeLock">ESの設定をAIに読み込む</v-btn>
 						<v-btn @click="isDeleteDialog = true" :disabled="!isModeLock">ES作成履歴を削除</v-btn>
 					</div>
-					<v-btn class="historyBtn">過去の履歴</v-btn>
+					<v-btn @click="isESHistoryDialog = true" class="historyBtn">過去の履歴</v-btn>
 				</v-col>
 				<v-col cols="12" md="10" class="fill-height">
 					<div class="chat-container">
@@ -68,11 +68,15 @@
 					</v-card-actions>
 				</v-card>
 			</v-dialog>
+			<v-dialog v-model="isESHistoryDialog">
+				<HistoryES />
+			</v-dialog>
 		</v-container>
 	</v-main>
 </template>
 
 <script setup>
+import HistoryES from '@/components/HistoryES.vue';
 import { ref, nextTick, onMounted } from 'vue';
 import axios from 'axios';
 
@@ -88,6 +92,7 @@ const esQuestion = ref(null);// ESで聞かれている質問
 
 const isModeLock = ref(false);// ESモードの選択をロックするかどうか
 const isDeleteDialog = ref(false);// 削除ダイアログの表示
+const isESHistoryDialog = ref(false);// ES履歴ダイアログの表示
 
 const inputText = ref('');// ユーザーから入力される会社名
 
@@ -228,7 +233,7 @@ async function saveES(newESId) {
 	// ESの本文を取得
 	const newES = messages.value[newESId - firstMessageNum].chatText;
 
-	await axios.post(`${ESCreateURL}/saveES`, { newES: newES })
+	await axios.post(`${ESCreateURL}/saveES`, { ESCompany: esCompany.value, ESMode: esModeSelect.value, newES: newES })
 		.then(response => {
 			// ページをリロード
 			window.location.reload();

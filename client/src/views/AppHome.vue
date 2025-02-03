@@ -23,7 +23,7 @@
 				<v-col>
 					<v-card @click="router.push('/es')" class="functionList">
 						<v-card-title>
-							<h3>エントリーシート作成(未完成)</h3>
+							<h3>エントリーシート作成(ログイン時のみ)</h3>
 						</v-card-title>
 						<v-card-text>
 							<p>ESの作成をAIがサポートしてくれます</p>
